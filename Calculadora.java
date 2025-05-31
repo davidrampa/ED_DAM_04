@@ -8,33 +8,61 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import javax.swing.JOptionPane;
 
-
+/**
+ * Clase Calculadora
+ * -------------------
+ * Implementa una calculadora básica con interfaz gráfica usando SWT.
+ * Permite realizar operaciones aritméticas simples: suma, resta, multiplicación y división.
+ *
+ * @author David Ramírez
+ * @version 1.0
+ */
 public class Calculadora {
 
     // Constantes
+
+    // Máximo número de dígitos permitidos en la entrada
     final int MAX_DIGITS = 5;
+    // Modo de entrada de datos
     final int MODE_ENTRADA = 0;
+    // Modo de visualización de resultados
     final int MODE_RESULTADO = 1;
 
     //Variables
+
+    // Modo actual (entrada o resultado)
     int modo;
+    // Último dígito ingresado (no usado directamente)
     int digito;
+    // Primer operando
     int valor1;
+    // Segundo operando
     int valor2;
+    // Operación a realizar
     String operacion;
+    // Flag para limpiar el campo de texto en la siguiente entrada
     boolean inicializa_resultado;
 
+    // Campo de texto donde se muestra el resultado
     private static Text texto_resultado;
 
+    /**
+     * Constructor de la Clase Calculadora.
+     * @param gui true para mostrar la interfaz gráfica, false para trabajar sin GUI.
+     */
     public Calculadora(boolean gui) {
 
         //Inicialización de las variables.
         inicializa();
-
+        // Si se indica, dibuja la calculadora
         if (gui==true) dibujaCalculadora();
 
     }
 
+    /**
+     * Dibuja la interfaz gráfica de la calculadora usando SWT.
+     * Contiene los botones numéricos y de operaciones.
+     */
     private void dibujaCalculadora() {
 
         Display display = Display.getDefault();
@@ -220,6 +248,7 @@ public class Calculadora {
         texto_resultado.setText("0");
         texto_resultado.setBounds(22, 19, 196, 21);
 
+        // Bucle de eventos de SWT
         shlCalculadora.open();
         shlCalculadora.layout();
         while (!shlCalculadora.isDisposed()) {
@@ -229,6 +258,9 @@ public class Calculadora {
         }
     }
 
+    /**
+     * Inicializa los valores y estado de la calculadora.
+     */
     public void inicializa() {
         operacion = "null";
         valor1 = 0;
@@ -237,19 +269,40 @@ public class Calculadora {
         inicializa_resultado = true;
     }
 
+    /**
+     * Obtiene el contenido del campo de texto como String.
+     *
+     * @return Cadena actual mostrada en el campo de resultado.
+     */
     public String getResultadoString (){
         return texto_resultado.getText();
     }
 
+    /**
+     * Establece el contenido del campo de texto.
+     *
+     * @param s Nueva cadena a mostrar en el resultado.
+     */
     public void setResultadoString(String s){
         texto_resultado.setText(s);
     }
 
+    /**
+     * Devuelve el contenido del campo de texto convertido a entero.
+     *
+     * @return Valor numérico del campo de resultado.
+     * @throws NumberFormatException si el texto no es numérico.
+     */
     public int getResultadoInt() {
         String resultado = texto_resultado.getText();
         return Integer.parseInt(resultado);
     }
 
+    /**
+     * Añade un nuevo dígito al campo de resultado.
+     *
+     * @param digito Dígito numérico entre 0 y 9.
+     */
     public void anadeNuevoDigito(int digito){
         if (inicializa_resultado)
             setResultadoString("");
@@ -268,6 +321,11 @@ public class Calculadora {
         inicializa_resultado = false;
     }
 
+    /**
+     * Maneja la lógica cuando se presiona un operador (+,-,*,/).
+     *
+     * @param new_operacion Operador en forma de cadena.
+     */
     public void ejecutarOperador(String new_operacion) {
 
         int resultado;
@@ -290,6 +348,9 @@ public class Calculadora {
         operacion = new_operacion;
     }
 
+    /**
+     * Ejecuta la operación pendiente al presionar "=".
+     */
     public void ejecutarIgual(){
         int resultado = 0;
 
@@ -300,6 +361,11 @@ public class Calculadora {
         operacion = "null";
     }
 
+    /**
+     * Ejecuta la operación actual entre valor1 y valor2.
+     *
+     * @return Resultado de la operación.
+     */
     public int ejecutarOperacion() {
         int resultado = 0;
 
@@ -330,6 +396,11 @@ public class Calculadora {
         return resultado;
     }
 
+    /**
+     * Muestra el resultado en pantalla y prepara para una nueva operación.
+     *
+     * @param resultado Resultado a mostrar.
+     */
     public void muestraResultado(int resultado){
         setResultadoString(Integer.toString(resultado));
         valor1 = resultado;
@@ -337,6 +408,11 @@ public class Calculadora {
         inicializa_resultado = true;
     }
 
+    /**
+     * Metodo principal para ejecutar la aplicación.
+     *
+     * @param args Argumentos de línea de comandos (no se utilizan).
+     */
     public static void main(String args[]) {
         Calculadora calculadora = new Calculadora(true);
     }
